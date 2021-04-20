@@ -1,49 +1,64 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useRef } from 'react';
 
-function Timer() {
-  const calculateTimeLeft = () => {
-    let year = new Date().getFullYear();
-    const difference = +new Date(`${year}-10-1`) - +new Date();
-    let timeLeft = {};
 
-    if (difference > 0) {
-      timeLeft = {
-        days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-        hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-        minutes: Math.floor((difference / 1000 / 60) % 60),
-        seconds: Math.floor((difference / 1000) % 60),
-      };
-    }
+const Timer = () => {
+  const [timer, setTimer] = useState(0)
+  const [isActive, setIsActive] = useState(false)
+  const [isPaused, setIsPaused] = useState(false)
+  const increment = useRef(null)
 
-    return timeLeft;
-  };
+  const handleStart = () => {
+    setIsActive(true)
+    setIsPaused(true)
+    increment.current = setInterval(() => {
+      setTimer((timer) => timer + 1)
+    }, 1000)
+  }
 
-  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
-  const [year] = useState(new Date().getFullYear());
+  const handlePause = () => {
+    clearInterval(increment.current)
+    setIsPaused(false)
+  }
 
-  useEffect(() => {
-    setTimeout(() => {
-      setTimeLeft(calculateTimeLeft());
-    }, 1000);
-  });
+  const handleResume = () => {
+    setIsPaused(true)
+    increment.current = setInterval(() => {
+      setTimer((timer) => timer + 1)
+    }, 1000)
+  }
 
-  const timerComponents = [];
+  const handleReset = () => {
+    clearInterval(increment.current)
+    setIsActive(false)
+    setIsPaused(false)
+    setTimer(0)
+  }
 
-  Object.keys(timeLeft).forEach((interval) => {
-    if (!timeLeft[interval]) {
-      return;
-    }
+  const formatTime = () => {
+    const getSeconds = `0${(timer % 60)}`.slice(-2)
+    const minutes = `${Math.floor(timer / 60)}`
+    const getMinutes = `0${minutes % 60}`.slice(-2)
+    const getHours = `0${Math.floor(timer / 3600)}`.slice(-2)
 
-    timerComponents.push(
-      <span>
-        {timeLeft[interval]} {interval}{" "}
-      </span>
-    );
-  });
+    return `${getHours} : ${getMinutes} : ${getSeconds}`
+  }
+
   return (
-    <div>
-      <h1>{year} Skill Countdown</h1>
-      {timerComponents.length ? timerComponents : <span>You did it!</span>}
+    <div className="app">
+      <div className='stopwatch-card'>
+        <p>{formatTime()}</p>
+        <div className='buttons'>
+          {
+            !isActive && !isPaused ?
+              <button onClick={handleStart}>Start</button>
+              : (
+                isPaused ? <button onClick={handlePause}>Pause</button> :
+                  <button onClick={handleResume}>Resume</button>
+              )
+          }
+          <button onClick={handleReset} disabled={!isActive}>Reset</button>
+        </div>
+      </div>
     </div>
   );
 }

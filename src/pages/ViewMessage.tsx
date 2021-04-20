@@ -57,9 +57,9 @@ function ViewMessage() {
             </IonItem>
 
             <div className="ion-padding">
-              <h1>Time until mastery!</h1>
+              <h1>To master a skill you need 10000 hours!</h1>
 
-          <Timer />          
+          <p>You've spent:</p> <Timer /> <p>keep it up champ!</p>         
               
             </div>
           </>

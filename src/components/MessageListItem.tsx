@@ -33,7 +33,6 @@ const MessageListItem: React.FC<MessageListItemProps> = ({ message }) => {
       </IonItem>
       <IonItemOptions side="end">
         <IonItemOption color="danger" onClick={() => console.log('deleted todo item')}>Delete</IonItemOption>
-        <IonItemOption color="light" onClick={() => console.log('deleted todo item')}>Reset</IonItemOption>
       </IonItemOptions>
     </IonItemSliding>
   );
