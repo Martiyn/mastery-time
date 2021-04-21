@@ -42,16 +42,9 @@ function ViewMessage() {
         {message ? (
           <>
             <IonItem>
-              <IonIcon icon={personCircle} color="primary"></IonIcon>
-              <IonLabel className="ion-text-wrap">
-                <h2>
-                  {message.fromName}
-                  <span className="date">
-                    <IonNote>{message.date}</IonNote>
-                  </span>
-                </h2>
+              <IonLabel>
                 <h3>
-                  To: <IonNote>Me</IonNote>
+                  Skill: <IonNote>Me</IonNote>
                 </h3>
               </IonLabel>
             </IonItem>
@@ -64,8 +57,9 @@ function ViewMessage() {
             </div>
           </>
         ) : (
-          <div>Message not found</div>
-        )}
+          <div></div>
+          )  
+        }
       </IonContent>
     </IonPage>
   );
